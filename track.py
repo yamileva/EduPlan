@@ -28,7 +28,7 @@ def show_track(track_id):
     track = session.query(Track).filter(Track.id == track_id,
                                         Track.user == current_user).first()
     if track:
-        return render_template("track.html", track=track, sections=track.sections_to_table())
+        return render_template("track.html", track=track, sections=track.sections)
     else:
         abort(404)
 
@@ -52,7 +52,7 @@ def edit_track(track_id):
             return redirect('/edit_track/<{}>'.format(track.id))
         else:
             abort(404)
-    return render_template("track_edit.html", track=track, sections=track.sections_to_table(), form=form)
+    return render_template("track_edit.html", track=track, sections=track.sections, form=form)
 
 
 @track.route('/create_track', methods=['GET', 'POST'])

@@ -21,7 +21,6 @@ class Track(SqlAlchemyBase):
     progress = sqlalchemy.Column(sqlalchemy.Integer, default=0)
 
     user = orm.relation('User')
-    publications = orm.relation("TrackTemplate", back_populates='track')
     sections = orm.relation("Section", back_populates='track')
 
     def sections_to_table(self):

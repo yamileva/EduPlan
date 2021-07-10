@@ -11,7 +11,7 @@ from models.users import *
 from forms.__all_forms import *
 
 
-auth = Blueprint('auth', __name__, template_folder='./templates/forms')
+auth = Blueprint('auth', __name__, template_folder='./templates/auth')
 
 
 @auth.route('/register', methods=['GET', 'POST'])

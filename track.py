@@ -39,8 +39,7 @@ def edit_track(track_id):
     form = NewTrackForm()
     track_id = int(track_id[1:-1])
     session = db_session.create_session()
-    track = session.query(Track).filter(Track.id == track_id,
-                                        Track.user == current_user).first()
+    track = session.query(Track).filter(Track.id == track_id, Track.user == current_user).first()
     if request.method == "GET":
         if track:
             form.title.data = track.title
@@ -53,8 +52,7 @@ def edit_track(track_id):
             return redirect('/edit_track/<{}>'.format(track.id))
         else:
             abort(404)
-    return render_template("track_edit.html", track=track, sections=track.sections_to_table(),
-                           form=form)
+    return render_template("track_edit.html", track=track, sections=track.sections_to_table(), form=form)
 
 
 @track.route('/create_track', methods=['GET', 'POST'])

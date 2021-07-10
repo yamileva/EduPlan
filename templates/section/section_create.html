@@ -7,8 +7,7 @@
 
 
 <h1>Создание траектории <br></h1>
-    <h3>
-    {{ form.title.label }}</h3>
+    <h3>{{ form.title.label }}</h3>
     {{ form.title(class="form-control") }}<br>
     {% for error in form.title.errors %}
         <p class="alert alert-danger" role="alert">
@@ -16,7 +15,7 @@
         </p>
     {% endfor %}
 
-    {{ form.type.label }}</h3>
+    <h3>{{ form.type.label }}</h3>
     {{ form.type(class="form-control") }}<br>
     {% for error in form.type.errors %}
         <p class="alert alert-danger" role="alert">
@@ -24,7 +23,7 @@
         </p>
     {% endfor %}
 
-    {{ form.duration.label }}</h3>
+    <h3>{{ form.duration.label }}</h3>
     {{ form.duration(class="form-control") }}<br>
     {% for error in form.duration.errors %}
         <p class="alert alert-danger" role="alert">

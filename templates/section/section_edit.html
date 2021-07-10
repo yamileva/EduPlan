@@ -1,26 +1,62 @@
 {% extends "base.html" %}
-% block content %}
+
+{% block content %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
     {% if section.type == 1 %}
-    <h1>Редактирование события/точки контроля <strong>{{item.title}}</strong></h1>
+    <h1>Редактирование события/точки контроля </h1>
     {% else %}
-    <h1>Редактирование раздела <strong>{{item.title}}</strong></h1>
+    <h1>Редактирование раздела </h1>
     {% endif %}
+
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
+            <div class="col align-self-center">{{ form.title(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.title.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <div class="container">
+
+    <h3>{{ form.duration.label }}</h3>
+    {{ form.duration(class="form-control") }}<br>
+       </div>
+    {% for error in form.duration.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
+                class="btn btn-primary", value="Изменить") }}</div>
+        </div>
+    </div>
+</form>
+
 
     {% if track.is_active == True %}
         {% if section.progress == 100 %}
         <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                 aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
+                 aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         {% elif section.progress == 0 %}
         <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                 aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
+                 aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         {% else %}
         <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-             aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
+             aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         {% endif %}
     {% endif %}
@@ -30,12 +66,12 @@
             <button type="button" class="btn btn-secondary btn-sm">Редактировать</button></h4>
         <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
         {% if section.type == 0 %}
-            {% for res in item.resources %}
+            {% for res in section.resources %}
                 <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
             {% endfor %}
         {% endif %}
     </div>
 
 <button type="button" class="btn btn-secondary btn-lg">Редактировать</button>
-{
+
 {% endblock %}

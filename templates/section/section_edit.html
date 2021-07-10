@@ -19,6 +19,8 @@
         <div class="row justify-content-md-center align-items-center">
             <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
             <div class="col align-self-center">{{ form.title(class="form-control") }}</div>
+            <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
+                class="btn btn-info", value="Переименовать") }}</div>
         </div>
     </div>
     {% for error in form.title.errors %}
@@ -26,27 +28,9 @@
             {{ error }}
         </p>
     {% endfor %}
-    <br>
-    <div class="container">
-        <div class="row justify-content-md-center align-items-center">
-            <div class="col-md-auto align-self-center">{{ form.duration.label }}</div>
-            <div class="col align-self-center">{{ form.duration(class="form-control") }}</div>
-        </div>
-    </div>
-    {% for error in form.duration.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-    <br>
-    <div class="container">
-        <div class="row justify-content-md-center align-items-center">
-            <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
-                class="btn btn-info", value="Изменить") }}</div>
-        </div>
-    </div>
-</form>
 
+</form>
+<br>
 {% if section.resources %}
     <div class="col">
         <h3>Ресурсы</h3> <br>

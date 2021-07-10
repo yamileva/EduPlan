@@ -7,10 +7,10 @@ from models.__all_models import *
 from forms.__all_forms import *
 
 
-track = Blueprint('track', __name__, template_folder='./templates/track')
+trc = Blueprint('track', __name__, template_folder='./templates/track')
 
 
-@track.route("/tracks")
+@trc.route("/tracks")
 @login_required
 def show_user_tracks():
     session = db_session.create_session()
@@ -20,7 +20,7 @@ def show_user_tracks():
     return render_template("user_tracks.html", tlist=tracks)
 
 
-@track.route("/track/<track_id>")
+@trc.route("/track/<track_id>")
 @login_required
 def show_track(track_id):
     track_id = int(track_id[1:-1])
@@ -33,7 +33,7 @@ def show_track(track_id):
         abort(404)
 
 
-@track.route("/edit_track/<track_id>", methods=['GET', 'POST'])
+@trc.route("/edit_track/<track_id>", methods=['GET', 'POST'])
 @login_required
 def edit_track(track_id):
     form = NewTrackForm()
@@ -55,7 +55,7 @@ def edit_track(track_id):
     return render_template("track_edit.html", track=track, form=form)
 
 
-@track.route('/create_track', methods=['GET', 'POST'])
+@trc.route('/create_track', methods=['GET', 'POST'])
 @login_required
 def create_track():
     form = NewTrackForm()
@@ -69,3 +69,41 @@ def create_track():
         return redirect('/tracks')
     return render_template('track_create.html', title='Создание новой траектории', form=form)
 
+
+@trc.route('/del_track/<track_id>', methods=['GET', 'POST'])
+@login_required
+def del_track(track_id):
+    track_id = int(track_id[1:-1])
+    session = db_session.create_session()
+    track = session.query(Track).filter(Track.id == track_id, Track.user == current_user).first()
+    if track is None:
+        abort(404)
+    session.delete(track)
+    session.commit()
+    return redirect('/tracks')
+
+
+@trc.route('/activate_track/<track_id>', methods=['GET', 'POST'])
+@login_required
+def activate_track(track_id):
+    track_id = int(track_id[1:-1])
+    session = db_session.create_session()
+    track = session.query(Track).filter(Track.id == track_id, Track.user == current_user).first()
+    if track is None:
+        abort(404)
+    track.is_active = True
+    session.commit()
+    return redirect('/track/<{}>'.format(track.id))
+
+
+@trc.route('/freeze_track/<track_id>', methods=['GET', 'POST'])
+@login_required
+def freeze_track(track_id):
+    track_id = int(track_id[1:-1])
+    session = db_session.create_session()
+    track = session.query(Track).filter(Track.id == track_id, Track.user == current_user).first()
+    if track is None:
+        abort(404)
+    track.is_active = False
+    session.commit()
+    return redirect('/track/<{}>'.format(track.id))

@@ -38,16 +38,6 @@
                         <a href="/del_section/<{{item.id}}>" role="button"
                            class="btn btn-info btn-sm">
                             Удалить</a>
-                        {% if not loop.first %}
-                        <a href="/move_up_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Переместить выше</a>
-                        {% endif %}
-                        {% if not loop.last %}
-                        <a href="/move_down_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Переместить ниже</a>
-                        {% endif %}
                     </h4>
                 </div>
                 <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<{{item.id}}>" role="button"

@@ -53,6 +53,7 @@ def create_section(track_id, section_id):
             abort(404)
     return render_template('section_create.html', title='Добавление элемента', form=form)
 
+
 @sect.route('/edit_section/<section_id>', methods=['GET', 'POST'])
 @login_required
 def edit_section(section_id):
@@ -66,7 +67,6 @@ def edit_section(section_id):
         form.title.data = section.title
         form.duration.data = section.duration
         form.type.data = str(section.type)
-
     if form.validate_on_submit():
         if section is None or section.track.user != current_user:
             abort(404)
@@ -74,5 +74,27 @@ def edit_section(section_id):
         section.duration = form.duration.data
         session.commit()
         return redirect('/edit_section/<{}>'.format(section_id))
-
     return render_template('section_edit.html', section=section, form=form)
+
+
+@sect.route('/del_section/<section_id>', methods=['GET', 'POST'])
+@login_required
+def del_section(section_id):
+    section_id = int(section_id[1:-1])
+    session = db_session.create_session()
+    section = session.query(Section).filter(Section.id == section_id).first()
+    if section is None or section.track.user != current_user:
+        abort(404)
+    track = section.track
+    session.delete(section)
+    session.commit()
+    if track.sections:
+        track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
+    else:
+        track.progress = 0
+    session.merge(track)
+    session.commit()
+    return redirect('/edit_track/<{}>'.format(track.id))
+
+
+

@@ -4,6 +4,6 @@ from wtforms.validators import DataRequired
 
 
 class CheckProgressForm(FlaskForm):
-    progress = IntegerField('Прогресс (в процентах)', validators=[DataRequired()])
+    progress = IntegerField('Прогресс (в процентах)')
 
     submit = SubmitField('Изменить')

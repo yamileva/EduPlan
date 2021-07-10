@@ -9,6 +9,7 @@ from forms.__all_forms import *
 
 resrc = Blueprint('resrc', __name__, template_folder='./templates/resource')
 
+
 @resrc.route('/check_progress/<resource_id>', methods=['GET', 'POST'])
 @login_required
 def check_progress(resource_id):
@@ -25,10 +26,17 @@ def check_progress(resource_id):
         if resource is None or resource.section.track.user != current_user:
             abort(404)
         resource.progress = form.progress.data
+        section = resource.section
+        section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
+        track = section.track
+        track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
+        session.merge(section)
+        session.merge(track)
         session.commit()
         return redirect('/section/<{}>'.format(resource.section.id))
 
     return render_template('check_progress.html', resource=resource, form=form)
+
 
 @resrc.route('/create_resource/<section_id>', methods=['GET', 'POST'])
 @login_required
@@ -49,9 +57,17 @@ def create_resource(section_id):
         section.resources.append(resource)
         session.merge(section)
         session.commit()
+        section.duration = max([res.duration for res in section.resources])
+        section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
+        track = section.track
+        track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
+        session.merge(section)
+        session.merge(track)
+        session.commit()
         return redirect('/edit_section/<{}>'.format(section.id))
 
     return render_template('resource_create.html', title='Добавление ресурса', form=form)
+
 
 @resrc.route('/edit_resource/<resource_id>', methods=['GET', 'POST'])
 @login_required
@@ -75,7 +91,35 @@ def edit_resource(resource_id):
         resource.content = form.content.data
         resource.duration = form.duration.data
         resource.progress = form.progress.data
+        section = resource.section
+        section.duration = max([res.duration for res in section.resources])
+        session.merge(section)
         session.commit()
         return redirect('/edit_section/<{}>'.format(resource.section.id))
 
     return render_template('resource_edit.html', resource=resource, form=form)
+
+
+@resrc.route('/del_resource/<resource_id>', methods=['GET', 'POST'])
+@login_required
+def del_resource(resource_id):
+    resource_id = int(resource_id[1:-1])
+    session = db_session.create_session()
+    resource = session.query(Resource).filter(Resource.id == resource_id).first()
+    if resource is None or resource.section.track.user != current_user:
+        abort(404)
+    section = resource.section
+    session.delete(resource)
+    session.commit()
+    if section.resources:
+        section.duration = max([res.duration for res in section.resources])
+        section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
+    else:
+        section.duration = 0
+        section.progress = 0
+    track = section.track
+    track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
+    session.merge(section)
+    session.merge(track)
+    session.commit()
+    return redirect('/edit_section/<{}>'.format(section.id))

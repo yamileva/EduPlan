@@ -2,8 +2,13 @@
 
 {% block content %}
 <h1>Траектория <br><strong>{{track.title}}</strong>
+    {% if track.is_active %}
+        <a href="/freeze_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Заморозить</a>
+    {% else %}
+        <a href="/activate_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Активировать</a>
+    {% endif %}
     <a href="/edit_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Редактировать</a>
-    <a href="/create_template/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Опубликовать</a></h1>
+    <a href="/del_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Удалить</a></h1>
 
 <div class="container">
     {% for item in track.sections%}

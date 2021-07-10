@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+% block content %}
+    {% if section.type == 1 %}
+    <h1>Редактирование события/точки контроля <strong>{{item.title}}</strong></h1>
+    {% else %}
+    <h1>Редактирование раздела <strong>{{item.title}}</strong></h1>
+    {% endif %}
+
+    {% if track.is_active == True %}
+        {% if section.progress == 100 %}
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                 aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        {% elif section.progress == 0 %}
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                 aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        {% else %}
+        <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+             aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="alert alert-secondary" role="alert">
+        <h4 class="alert-heading"><strong>{{section.title}}</strong>
+            <button type="button" class="btn btn-secondary btn-sm">Редактировать</button></h4>
+        <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
+        {% if section.type == 0 %}
+            {% for res in item.resources %}
+                <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+<button type="button" class="btn btn-secondary btn-lg">Редактировать</button>
+{
+{% endblock %}

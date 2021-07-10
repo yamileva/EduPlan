@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+
+<h1>Редактирование траектории <br></h1>
+<div class="container">
+    <div class="row justify-content-md-center align-items-center">
+        <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
+        <div class="col align-self-center">{{ form.title(class="form-control") }}</div>
+        <div class="col-md-auto align-self-center">{{ form.submit(type="submit", class="btn btn-primary", value="Переименовать") }}</div>
+</div></div>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+</form>
+<br>
+<div class="container">
+    <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<-1>" role="button"
+                                 class="btn btn-outline-secondary"><i class="bi bi-plus-lg"></i></a></h4>
+    {% for row in sections%}
+    <div class="row align-items-center">
+        {% for item in row %}
+            {% if item == 0 %}
+                <div class="col"> </div>
+            {% else %}
+                <div class="col">
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading"><strong>{{item.title}}</strong>
+                            <a href="/edit_section/<{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
+                                Редактировать</a> </h4>
+                    </div>
+                    <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<{{item.id}}>" role="button"
+                                                 class="btn btn-outline-secondary"><i class="bi bi-plus-lg"></i></a></h4>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="col-md-auto">
+        <a href="/create_section/<{{track.id}}>/<{{row}}>" role="button"
+                                     class="btn btn-outline-secondary">
+            <svg class="bi" width="32" height="32" fill="currentColor">
+                <use xlink:href="bootstrap-icons.svg#heart-fill"/>
+            </svg>
+        </a>
+            </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Траектория <br><strong>{{track.title}}</strong>
+    <a href="/edit_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Редактировать</a>
+    <a href="/create_template/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Опубликовать</a></h1>
+
+<div class="container">
+    {% for row in sections%}
+    <div class="row">
+        {% for item in row %}
+            {% if track.is_active == True %}
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                         aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                {% if item.progress == 100 %}
+                    {% set style = 'alert-primary'%}
+                {% elif item.progress == 0 %}
+                    {% set style = 'alert-light'%}
+                {% else %}
+                    {% set style = 'alert-success'%}
+                {% endif %}
+            {% else %}
+                {% set style = 'alert-secondary'%}
+            {% endif %}
+
+            {% if item == 0 %}
+            <div class="col"> </div>
+            {% else %}
+            <div class="col">
+                <div class="alert {{style}}" role="alert">
+                    <h4 class="alert-heading"><strong>{{item.title}}</strong>
+                        <a href="/check_progress/{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
+                            Отметить прогресс</a></h4>
+                    <h5 class="alert-heading"> Длительность - {{item.duration}} нед.</h5>
+                    {% if item.type == 0 %}
+                        {% for res in item.resources %}
+                            <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+  <h1 class="display-4">Добро пожаловать на EduPlanner!</h1>
+  <p class="lead">
+      Непрерывное образование - данность современного мира.<br>
+      Выстрой собственную образовательную траекторию и следи за своим прогрессом. </p>
+  <hr class="my-4">
+
+
+  {% if current_user.is_authenticated %}
+    <a href="/tracks" class="btn btn-success btn-lg" role="button">
+        Мои траектории
+    </a>
+
+    <a href="/track_templates" class="btn btn-info btn-lg" role="button">
+        Открытые шаблоны траекторий
+    </a>
+  {% else %}
+    <p>Зарегистрируйтесь или авторизуйтесь, чтобы получить доступ к инструментам.</p>
+
+
+  {% endif %}
+
+
+
+
+</div>
+
+{% endblock %}

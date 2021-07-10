@@ -32,7 +32,6 @@ def main():
     db_session.global_init("db/tracks.sqlite")
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(track_blueprint)
-    app.register_blueprint(track_template_blueprint)
     app.register_blueprint(section_blueprint)
     app.register_blueprint(resource_blueprint)
     app.run()

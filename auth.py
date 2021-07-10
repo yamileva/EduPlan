@@ -1,13 +1,17 @@
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+
+
 from flask import Blueprint
 from flask import render_template, redirect
 from flask_login import login_user, login_required, logout_user
 
-from ..models import db_session
-from ..models.users import *
-from ..forms.__all_forms import *
+from models import db_session
+from models.users import *
+from forms.__all_forms import *
 
 
-auth = Blueprint('auth', __name__, template_folder='./templates')
+auth = Blueprint('auth', __name__, template_folder='./templates/forms')
 
 
 @auth.route('/register', methods=['GET', 'POST'])

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if section.type == 0 %}
+<h1>Раздел
+{% elif section.type == 1 %}
+<h1>Точка контроля
+{% endif %}
+<br><strong>{{section.title}}</strong>
+    <a href="/edit_section/<{{section.id}}>"
+       role="button" class="btn btn-secondary btn-sm">Редактировать</a>
+    <a href="/track/<{{section.track.id}}>"
+       role="button" class="btn btn-secondary btn-sm">Вернуться к траектории</a></h1>
+
+
+<div class="container">
+    <div class="row">
+        {% if section.track.is_active == True %}
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
+                     aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        {% endif %}
+
+
+            <div class="col">
+
+                <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
+                {% if section.resources %}
+                    <h3>Ресурсы</h3>
+                    {% for res in section.resources %}
+                        {% if res.progress == 100 %}
+                            {% set style = 'alert-primary'%}
+                        {% elif res.progress == 0 %}
+                            {% set style = 'alert-light'%}
+                        {% else %}
+                            {% set style = 'alert-success'%}
+                        {% endif %}
+                    <div class="alert {{style}}" role="alert">
+                        <strong>{{res.title}}</strong> <br>
+                        {{res.progress}}%
+                        <a href="/check_progress/{{res.id}}>" role="button" class="btn btn-secondary btn-sm">
+                            Отметить прогресс</a>
+                        <br>
+                        {{res.content}}
+                        <br>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                     <h3>Ресурсы отсутствуют</h3>
+                {% endif %}
+
+            </div>
+
+
+
+    </div>
+</div>
+{% endblock %}

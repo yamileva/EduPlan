@@ -12,9 +12,9 @@ class Section(SqlAlchemyBase):
     title = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     track_id = sqlalchemy.Column(sqlalchemy.Integer,
                                  sqlalchemy.ForeignKey("tracks.id"))
-    type = sqlalchemy.Column(sqlalchemy.Integer, default=0)
+    type = sqlalchemy.Column(sqlalchemy.Integer, default=0) # не нужен?  или учесть подвал?
     row = sqlalchemy.Column(sqlalchemy.Integer, default=1)
-    rows = sqlalchemy.Column(sqlalchemy.Integer, default=1)
+    rows = sqlalchemy.Column(sqlalchemy.Integer, default=1) # не нужен
 
     duration = sqlalchemy.Column(sqlalchemy.Integer, default=1)
     progress = sqlalchemy.Column(sqlalchemy.Integer, default=0)

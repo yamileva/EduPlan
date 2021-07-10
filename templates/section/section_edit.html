@@ -7,10 +7,13 @@
     {{ form.csrf_token }}
 
     {% if section.type == 1 %}
-    <h1>Редактирование события/точки контроля </h1>
-    {% else %}
-    <h1>Редактирование раздела </h1>
+    <h1>Редактирование события/точки контроля <a href="/section/<{{section.id}}>" role="button"
+        class="btn btn-secondary">Вернуться к просмотру</a></h1>
+    {% elif section.type == 0 %}
+    <h1>Редактирование раздела <a href="/section/<{{section.id}}>" role="button"
+        class="btn btn-secondary">Вернуться к просмотру</a></h1>
     {% endif %}
+
 
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
@@ -23,55 +26,55 @@
             {{ error }}
         </p>
     {% endfor %}
+    <br>
     <div class="container">
-
-    <h3>{{ form.duration.label }}</h3>
-    {{ form.duration(class="form-control") }}<br>
-       </div>
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.duration.label }}</div>
+            <div class="col align-self-center">{{ form.duration(class="form-control") }}</div>
+        </div>
+    </div>
     {% for error in form.duration.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
         </p>
     {% endfor %}
+    <br>
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
             <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
-                class="btn btn-primary", value="Изменить") }}</div>
+                class="btn btn-info", value="Изменить") }}</div>
         </div>
     </div>
 </form>
 
+{% if section.resources %}
+    <div class="col">
+        <h3>Ресурсы</h3> <br>
+    {% for res in section.resources %}
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading"><strong>{{res.title}}</strong>
+                        <a href="/edit_resource/<{{res.id}}>" role="button"
+                           class="btn btn-info btn-sm">
+                            Редактировать</a>
+                        <a href="/del_resource/<{{res.id}}>" role="button"
+                           class="btn btn-info btn-sm">
+                            Удалить</a>
+                    </h4>
+                    {{res.content}}
+                    <br>
+                </div>
 
-    {% if track.is_active == True %}
-        {% if section.progress == 100 %}
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
-                 aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
-        {% elif section.progress == 0 %}
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
-                 aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        {% else %}
-        <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
-             aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        {% endif %}
+    {% endfor %}
+    <h4 class="alert-heading"><a href="/create_resource/<{{section.id}}>" role="button"
+                                 class="btn btn-info">Добавить ресурс</a></h4>
+    </div>
+    {% else %}
+        <h3>Ресурсы отсутствуют</h3>
     {% endif %}
 
-    <div class="alert alert-secondary" role="alert">
-        <h4 class="alert-heading"><strong>{{section.title}}</strong>
-            <button type="button" class="btn btn-secondary btn-sm">Редактировать</button></h4>
-        <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
-        {% if section.type == 0 %}
-            {% for res in section.resources %}
-                <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
-            {% endfor %}
-        {% endif %}
-    </div>
-
-<button type="button" class="btn btn-secondary btn-lg">Редактировать</button>
 
 {% endblock %}

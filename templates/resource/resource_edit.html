@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <h1>Редактирование ресурса <a href="/section/<{{resource.section.id}}>" role="button"
+        class="btn btn-secondary">Вернуться к просмотру</a></h1>
+
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
+            <div class="col align-self-center">{{ form.title(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.title.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.content.label }}</div>
+            <div class="col align-self-center">{{ form.content(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.content.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.duration.label }}</div>
+            <div class="col align-self-center">{{ form.duration(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.duration.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.progress.label }}</div>
+            <div class="col align-self-center">{{ form.progress(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.progress.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
+                class="btn btn-info", value="Изменить") }}</div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

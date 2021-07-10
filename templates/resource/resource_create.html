@@ -6,7 +6,7 @@
     {{ form.csrf_token }}
 
 
-<h1>Создание раздела <br></h1>
+<h1>Создание ресурса <br></h1>
     <h3>{{ form.title.label }}</h3>
     {{ form.title(class="form-control") }}<br>
     {% for error in form.title.errors %}
@@ -15,9 +15,9 @@
         </p>
     {% endfor %}
 
-    <h3>{{ form.type.label }}</h3>
-    {{ form.type(class="form-control") }}<br>
-    {% for error in form.type.errors %}
+    <h3>{{ form.content.label }}</h3>
+    {{ form.content(class="form-control") }}<br>
+    {% for error in form.content.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
         </p>

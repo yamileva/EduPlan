@@ -69,12 +69,13 @@
             </div>
         </div>
     {% endfor %}
-    <h4 class="alert-heading"><a href="/create_resource/<{{section.id}}>" role="button"
-                                 class="btn btn-info">Добавить ресурс</a></h4>
+
     </div>
     {% else %}
         <h3>Ресурсы отсутствуют</h3>
     {% endif %}
+    <h4 class="alert-heading"><a href="/create_resource/<{{section.id}}>" role="button"
+                                 class="btn btn-info">Добавить ресурс</a></h4>
 
 
 {% endblock %}

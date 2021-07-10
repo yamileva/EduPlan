@@ -46,7 +46,7 @@ def create_section(track_id, section_id):
                     item.row += 1
             section.duration = form.duration.data
             track.sections.append(section)
-            session.merge(current_user)
+            session.merge(track)
             session.commit()
             return redirect('/edit_track/<{}>'.format(track_id))
         else:

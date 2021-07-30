@@ -48,7 +48,7 @@ def create_section(track_id, section_id):
             track.sections.append(section)
             session.merge(track)
             session.commit()
-            return redirect('/edit_track/<{}>'.format(track_id))
+            return redirect('/edit_section/<{}>'.format(section.id))
         else:
             abort(404)
     return render_template('section_create.html', title='Добавление элемента', form=form)

@@ -35,6 +35,18 @@
     <br>
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.intensity.label }}</div>
+            <div class="col align-self-center">{{ form.intensity(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.intensity.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
             <div class="col-md-auto align-self-center">{{ form.duration.label }}</div>
             <div class="col align-self-center">{{ form.duration(class="form-control") }}</div>
         </div>
@@ -44,6 +56,7 @@
             {{ error }}
         </p>
     {% endfor %}
+
     <br>
     <div class="container">
         <div class="row justify-content-md-center align-items-center">

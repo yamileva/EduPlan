@@ -26,6 +26,7 @@ def check_progress(resource_id):
         if resource is None or resource.section.track.user != current_user:
             abort(404)
         resource.progress = form.progress.data
+
         section = resource.section
         section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
         track = section.track
@@ -52,13 +53,16 @@ def create_resource(section_id):
         resource = Resource()
         resource.title = form.title.data
         resource.content = form.content.data
+        resource.intensity = form.intensity.data
         resource.duration = form.duration.data
+        resource.progress = form.progress.data
 
         section.resources.append(resource)
         session.merge(section)
         session.commit()
         section.duration = max([res.duration for res in section.resources])
         section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
+        session.commit()
         track = section.track
         track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
         session.merge(section)
@@ -81,6 +85,7 @@ def edit_resource(resource_id):
             abort(404)
         form.title.data = resource.title
         form.content.data = resource.content
+        form.intensity.data = resource.intensity
         form.duration.data = resource.duration
         form.progress.data = resource.progress
 
@@ -89,11 +94,18 @@ def edit_resource(resource_id):
             abort(404)
         resource.title = form.title.data
         resource.content = form.content.data
+        resource.intensity = form.intensity.data
         resource.duration = form.duration.data
         resource.progress = form.progress.data
+
         section = resource.section
         section.duration = max([res.duration for res in section.resources])
+        section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
+        session.commit()
+        track = section.track
+        track.progress = sum([sect.progress for sect in track.sections]) // len(track.sections)
         session.merge(section)
+        session.merge(track)
         session.commit()
         return redirect('/edit_section/<{}>'.format(resource.section.id))
 

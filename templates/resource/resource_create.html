@@ -23,9 +23,25 @@
         </p>
     {% endfor %}
 
+    <h3>{{ form.intensity.label }}</h3>
+    {{ form.title(class="form-control") }}<br>
+    {% for error in form.intensity.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+
     <h3>{{ form.duration.label }}</h3>
     {{ form.duration(class="form-control") }}<br>
     {% for error in form.duration.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+
+    <h3>{{ form.progress.label }}</h3>
+    {{ form.title(class="form-control") }}<br>
+    {% for error in form.progress.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
         </p>

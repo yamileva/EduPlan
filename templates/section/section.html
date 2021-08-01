@@ -17,12 +17,6 @@
 
 <div class="container">
     <div class="row">
-        {% if section.track.is_active == True %}
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{section.progress}}%"
-                     aria-valuenow="{{section.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        {% endif %}
 
         <div class="col">
             <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
@@ -37,13 +31,19 @@
                         {% set style = 'alert-success'%}
                     {% endif %}
                 <div class="alert {{style}}" role="alert">
+                    <h5 class="alert-heading"><div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{res.progress}}%"
+                                aria-valuenow="{{res.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div></h5>
                     <strong>{{res.title}}</strong> <br>
-                    {{res.progress}}%
+                    {{res.content}}<br>
+                    Длительность - {{ res.duration }} нед.<br>
+                    Трудоемкость - {{ res.intensity }} {{ res.dim }}<br>
+                    {% if section.track.is_active == True %}
+                    Выполнено {{res.completed}} {{res.dim}}
                     <a href="/check_progress/<{{res.id}}>" role="button" class="btn btn-secondary btn-sm">
-                        Отметить прогресс</a>
-                    <br>
-                    {{res.content}}
-                    <br>
+                        Отметить прогресс</a> <br>
+                    {% endif %}
                 </div>
                 {% endfor %}
             {% else %}

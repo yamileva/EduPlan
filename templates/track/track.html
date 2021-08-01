@@ -14,10 +14,6 @@
     {% for item in track.sections%}
     <div class="row">
         {% if track.is_active == True %}
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                     aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
             {% if item.progress == 100 %}
                 {% set style = 'alert-primary'%}
             {% elif item.progress == 0 %}
@@ -34,6 +30,12 @@
         {% else %}
         <div class="col">
             <div class="alert {{style}}" role="alert">
+                {% if track.is_active == True %}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                            aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                {% endif %}
                 <h4 class="alert-heading"><strong>{{item.title}}</strong>
                     <a href="/section/<{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
                         Просмотр</a></h4>

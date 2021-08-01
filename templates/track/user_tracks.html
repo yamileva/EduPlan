@@ -2,65 +2,47 @@
 
 {% block content %}
 <h1>Мои траектории</h1>
-{% for item in tlist%}
-    {% if item.is_active %}
-        {% if item.progress == 100 %}
-        <div class="alert alert-primary" role="alert">
-            <h4 class="alert-heading"><strong>{{item.title}}</strong>
-                <span class="badge badge-light">Активен</span>
-            </h4>
-            <h5 class="alert-heading"><div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                     aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div></h5>
-            <span class="badge badge-light"></span>
-            <a href="/track/<{{item.id}}>" class="btn btn-secondary btn-lg" role="button">
-                Просмотр
-            </a>
-        </div>
-        <div></div>
-        {% elif item.progress == 0 %}
-        <div class="alert alert-light" role="alert">
-            <h4 class="alert-heading"><strong>{{item.title}}</strong>
-                <span class="badge badge-light">Активен</span>
-            </h4>
-            <h5 class="alert-heading"><div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                     aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div></h5>
-            <a href="/track/<{{item.id}}>" class="btn btn-secondary btn-lg" role="button">
-                Просмотр
-            </a>
-        </div>
-        <div></div>
-        {% else %}
-        <div class="alert alert-success" role="alert">
-            <h4 class="alert-heading"><strong>{{item.title}}</strong>
-                <span class="badge badge-light">Активен</span>
-            </h4>
-            <h5 class="alert-heading"><div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                     aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-            </div></h5>
-            <a href="/track/<{{item.id}}>" class="btn btn-secondary btn-lg" role="button">
-                Просмотр
-            </a>
-        </div>
-        <div></div>
-        {% endif %}
-    {% else %}
-    <div class="alert alert-secondary" role="alert">
-        <h4 class="alert-heading"><strong>{{item.title}}</strong>
-            <span class="badge badge-light">Нективен</span>
-        </h4>
-        <a href="/track/<{{item.id}}>" class="btn btn-secondary btn-lg" role="button">
-            Просмотр
-        </a>
-    </div>
-    <div></div>
-    {% endif %}
+<div class="container">
+    <div class="row">
+        {% for item in tlist%}
+            {% if item.is_active == True %}
+                {% set active = 'Активен'%}
+                {% if item.progress == 100 %}
+                    {% set style = 'alert-primary'%}
+                {% elif item.progress == 0 %}
+                    {% set style = 'alert-light'%}
+                {% else %}
+                    {% set style = 'alert-success'%}
+                {% endif %}
+            {% else %}
+                {% set active = 'Неактивен'%}
+                {% set style = 'alert-secondary'%}
+            {% endif %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="alert {{style}}" role="alert">
+                    <h4 class="alert-heading"><strong>{{item.title}}</strong>
+                        <span class="badge badge-light">{{active}}</span>
+                    </h4>
+                    {% if item.is_active == True %}
+                    <h5 class="alert-heading">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                                aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </h5>
+                    {% endif %}
+                    <span class="badge badge-light"></span>
+                    <a href="/track/<{{item.id}}>" class="btn btn-secondary btn-lg" role="button">
+                        Просмотр
+                    </a>
+                </div>
+            </div>
 
-{% endfor %}
-<a href="/create_track" role="button" class="btn btn-secondary btn-lg btn-block">
-    Создать новую траекторию</a>
+        {% endfor %}
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <a href="/create_track" role="button" class="btn btn-secondary btn-lg btn-block">
+                Создать новую траекторию</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

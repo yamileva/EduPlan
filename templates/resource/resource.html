@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
+    <h1>{% block header %}{% endblock %}</h1>
+
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
+            <div class="col align-self-center">{{ form.title(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.title.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.content.label }}</div>
+            <div class="col align-self-center">{{ form.content(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.content.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.intensity.label }}</div>
+            <div class="col align-self-center">{{ form.intensity(class="form-control") }}</div>
+            <div class="col align-self-center">{{ form.dim(class="form-control") }} </div>
+            <div class="col-md-auto align-self-center">({{ form.dim.label }})</div>
+
+       </div>
+    </div>
+    {% for error in form.intensity.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    {% for error in form.dim.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.duration.label }}</div>
+            <div class="col align-self-center">{{ form.duration(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.duration.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.completed.label }}</div>
+            <div class="col align-self-center">{{ form.completed(class="form-control") }}</div>
+        </div>
+    </div>
+    {% for error in form.completed.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+    {% endfor %}
+    <br>
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-md-auto align-self-center">{{ form.submit(type="submit",
+                class="btn btn-info", value=button_value) }}</div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

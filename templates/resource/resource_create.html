@@ -1,52 +1,5 @@
-{% extends "base.html" %}
+{% extends "resource.html" %}
 
-{% block content %}
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-    {{ form.csrf_token }}
-
-
-<h1>Создание ресурса <br></h1>
-    <h3>{{ form.title.label }}</h3>
-    {{ form.title(class="form-control") }}<br>
-    {% for error in form.title.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-
-    <h3>{{ form.content.label }}</h3>
-    {{ form.content(class="form-control") }}<br>
-    {% for error in form.content.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-
-    <h3>{{ form.intensity.label }}</h3>
-    {{ form.title(class="form-control") }}<br>
-    {% for error in form.intensity.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-
-    <h3>{{ form.duration.label }}</h3>
-    {{ form.duration(class="form-control") }}<br>
-    {% for error in form.duration.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-
-    <h3>{{ form.progress.label }}</h3>
-    {{ form.title(class="form-control") }}<br>
-    {% for error in form.progress.errors %}
-        <p class="alert alert-danger" role="alert">
-            {{ error }}
-        </p>
-    {% endfor %}
-
-    {{ form.submit(type="submit", class="btn btn-primary btn-lg", value="Создать") }}
-</form>
+{% block header %}
+Создание ресурса
 {% endblock %}

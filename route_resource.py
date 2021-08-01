@@ -76,7 +76,7 @@ def create_resource(section_id):
         section.resources.append(resource)
         session.merge(section)
         session.commit()
-        section.duration = max([res.duration for res in section.resources])
+        section.duration = sum([res.duration for res in section.resources])
         section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
         session.commit()
         track = section.track
@@ -118,7 +118,7 @@ def edit_resource(resource_id):
         resource.progress = resource.completed * 100 // resource.intensity
 
         section = resource.section
-        section.duration = max([res.duration for res in section.resources])
+        section.duration = sum([res.duration for res in section.resources])
         section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
         session.commit()
         track = section.track
@@ -144,7 +144,7 @@ def del_resource(resource_id):
     session.delete(resource)
     session.commit()
     if section.resources:
-        section.duration = max([res.duration for res in section.resources])
+        section.duration = sum([res.duration for res in section.resources])
         section.progress = sum([res.progress for res in section.resources]) // len(section.resources)
     else:
         section.duration = 0

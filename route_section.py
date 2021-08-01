@@ -40,7 +40,7 @@ def create_section(track_id, section_id):
             else:
                 prev_section = session.query(Section).filter(Section.id == section_id,
                                                              Section.track_id == track_id).first()
-                section.row = prev_section.row + prev_section.rows
+                section.row = prev_section.row + 1
             for item in track.sections:
                 if item.row >= section.row:
                     item.row += 1

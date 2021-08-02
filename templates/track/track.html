@@ -3,12 +3,16 @@
 {% block content %}
 <h1>Траектория <br><strong>{{track.title}}</strong>
     {% if track.is_active %}
-        <a href="/freeze_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Заморозить</a>
+        <a href="/freeze_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">
+            <i class="bi bi-snow"></i></a>
     {% else %}
-        <a href="/activate_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Активировать</a>
+        <a href="/activate_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">
+            <i class="bi bi-droplet-fill"></i></a>
     {% endif %}
-    <a href="/edit_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Редактировать</a>
-    <a href="/del_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Удалить</a></h1>
+    <a href="/edit_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">
+        <i class="bi bi-hammer"></i></a>
+    <a href="/del_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">
+        <i class="bi bi-trash"></i></a></h1>
 
 <div class="container">
     <div class="row">
@@ -36,7 +40,7 @@
                     {% endif %}
                     <h4 class="alert-heading"><strong>{{item.title}}</strong>
                         <a href="/section/<{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
-                            Просмотр</a></h4>
+                            <i class="bi bi-search"></i></a></h4>
                     <h5 class="alert-heading"> Длительность - {{item.duration}} нед.</h5>
                     {% if item.type == 0 %}
                         {% for res in item.resources %}

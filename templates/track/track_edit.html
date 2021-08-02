@@ -8,7 +8,7 @@
 
 <h1>Редактирование траектории
 <a href="/track/<{{track.id}}>" role="button"
-   class="btn btn-secondary">Вернуться к просмотру</a><br></h1>
+   class="btn btn-secondary"><i class="bi bi-search"></i></a><br></h1>
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
             <div class="col-md-auto align-self-center">{{ form.title.label }}</div>
@@ -26,28 +26,28 @@
 <br>
 <div class="container">
     <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<-1>" role="button"
-                                 class="btn btn-info">Добавить раздел</a></h4>
+                                 class="btn btn-info"><i class="bi bi-plus-lg"></i></a></h4>
     {% for item in sections%}
         <div class="row align-items-center">
             <div class="col">
                 <div class="alert alert-primary" role="alert">
                     <h4 class="alert-heading"><strong>{{item.title}}</strong>
                         <a href="/edit_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">Редактировать</a>
+                           class="btn btn-info btn-sm"><i class="bi bi-hammer"></i></a>
                         <a href="/del_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">Удалить</a>
+                           class="btn btn-info btn-sm"> <i class="bi bi-trash"></i></a>
                         {% if not loop.first %}
                             <a href="/move_up_section/<{{item.id}}>" role="button"
-                               class="btn btn-info btn-sm">Вверх</a>
+                               class="btn btn-info btn-sm"><i class="bi bi-chevron-double-up"></i></a>
                         {% endif %}
                         {% if not loop.last %}
                             <a href="/move_down_section/<{{item.id}}>" role="button"
-                               class="btn btn-info btn-sm">Вниз</a>
+                               class="btn btn-info btn-sm"><i class="bi bi-chevron-double-down"></i></a>
                         {% endif %}
                     </h4>
                 </div>
                 <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<{{item.id}}>" role="button"
-                                             class="btn btn-info">Добавить раздел</a></h4>
+                                             class="btn btn-info"><i class="bi bi-plus-lg"></i></a></h4>
             </div>
         </div>
     {% endfor %}

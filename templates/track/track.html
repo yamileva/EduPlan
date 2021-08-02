@@ -11,45 +11,41 @@
     <a href="/del_track/<{{track.id}}>" role="button" class="btn btn-secondary btn-sm">Удалить</a></h1>
 
 <div class="container">
-    {% for item in track.sections%}
     <div class="row">
-        {% if track.is_active == True %}
-            {% if item.progress == 100 %}
-                {% set style = 'alert-primary'%}
-            {% elif item.progress == 0 %}
-                {% set style = 'alert-light'%}
+        {% for item in sections%}
+            {% if track.is_active == True %}
+                {% if item.progress == 100 %}
+                    {% set style = 'alert-primary'%}
+                {% elif item.progress == 0 %}
+                    {% set style = 'alert-light'%}
+                {% else %}
+                    {% set style = 'alert-success'%}
+                {% endif %}
             {% else %}
-                {% set style = 'alert-success'%}
+                {% set style = 'alert-secondary'%}
             {% endif %}
-        {% else %}
-            {% set style = 'alert-secondary'%}
-        {% endif %}
 
-        {% if item == 0 %}
-        <div class="col"> </div>
-        {% else %}
-        <div class="col">
-            <div class="alert {{style}}" role="alert">
-                {% if track.is_active == True %}
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
-                            aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                {% endif %}
-                <h4 class="alert-heading"><strong>{{item.title}}</strong>
-                    <a href="/section/<{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
-                        Просмотр</a></h4>
-                <h5 class="alert-heading"> Длительность - {{item.duration}} нед.</h5>
-                {% if item.type == 0 %}
-                    {% for res in item.resources %}
-                        <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
-                    {% endfor %}
-                {% endif %}
+
+            <div class="col-lg-6">
+                <div class="alert {{style}}" role="alert">
+                    {% if track.is_active == True %}
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%"
+                                aria-valuenow="{{item.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    {% endif %}
+                    <h4 class="alert-heading"><strong>{{item.title}}</strong>
+                        <a href="/section/<{{item.id}}>" role="button" class="btn btn-secondary btn-sm">
+                            Просмотр</a></h4>
+                    <h5 class="alert-heading"> Длительность - {{item.duration}} нед.</h5>
+                    {% if item.type == 0 %}
+                        {% for res in item.resources %}
+                            <strong>{{res.title}}</strong> - {{res.content}}, {{res.progress}}% <br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        {% endif %}
-
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

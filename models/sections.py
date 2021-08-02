@@ -20,3 +20,14 @@ class Section(SqlAlchemyBase):
 
     track = orm.relation('Track')
     resources = orm.relation("Resource", back_populates='section')
+
+    def on_delete(self, session, alldel=False):
+        for resource in self.resources:
+            resource.on_delete(session)
+            session.delete(resource)
+        if alldel:
+            return
+        track = self.track
+        for item in track.sections:
+            if item.row > self.row:
+                item.row -= 1

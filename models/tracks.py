@@ -23,16 +23,8 @@ class Track(SqlAlchemyBase):
     user = orm.relation('User')
     sections = orm.relation("Section", back_populates='track')
 
-    def sections_to_table(self):
-        if not self.sections:
-            return [[]]
-        bottom_sect = max(self.sections, key=lambda sect: sect.row + sect.rows - 1)
-        rows = bottom_sect.row + bottom_sect.rows - 1
-        table_sections = [list() for _ in range(rows)]
-        sorted_sections = sorted(self.sections, key=lambda section: -section.rows)
-        for item in sorted_sections:
-            table_sections[item.row - 1].append(item)
-            if item.rows > 1:
-                for i in range(item.rows - 1):
-                    table_sections[item.row + i].append(0)
-        return table_sections
+    def on_delete(self, session):
+        for section in self.sections:
+            section.on_delete(session)
+            session.delete(section)
+

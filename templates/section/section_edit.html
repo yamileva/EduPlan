@@ -7,13 +7,16 @@
     {{ form.csrf_token }}
 
     {% if section.type == 1 %}
-    <h1>Редактирование события/точки контроля <a href="/section/<{{section.id}}>" role="button"
-        class="btn btn-secondary">Вернуться к просмотру</a></h1>
+    <h1>Редактирование события/точки контроля
+        <a href="/section/<{{section.id}}>" role="button" class="btn btn-secondary">Вернуться к просмотру</a>
+        <a href="/edit_track/<{{section.track_id}}>" role="button" class="btn btn-secondary">Редактировать трек</a>
+    </h1>
     {% elif section.type == 0 %}
-    <h1>Редактирование раздела <a href="/section/<{{section.id}}>" role="button"
-        class="btn btn-secondary">Вернуться к просмотру</a></h1>
+    <h1>Редактирование раздела
+        <a href="/section/<{{section.id}}>" role="button" class="btn btn-secondary">Вернуться к просмотру</a>
+        <a href="/edit_track/<{{section.track_id}}>" role="button" class="btn btn-secondary">Редактировать трек</a>
+    </h1>
     {% endif %}
-
 
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
@@ -34,21 +37,27 @@
 {% if section.resources %}
     <div class="col">
         <h3>Ресурсы</h3> <br>
-    {% for res in section.resources %}
+    {% for res in resources %}
         <div class="row align-items-center">
             <div class="col">
                 <div class="alert alert-primary" role="alert">
                     <h4 class="alert-heading"><strong>{{res.title}}</strong>
                         <a href="/edit_resource/<{{res.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Редактировать</a>
+                           class="btn btn-info btn-sm">Редактировать</a>
                         <a href="/del_resource/<{{res.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Удалить</a>
+                           class="btn btn-info btn-sm">Удалить</a>
+                        {% if not loop.first %}
+                        <a href="/move_up_resource/<{{res.id}}>" role="button"
+                           class="btn btn-info btn-sm">Вверх</a>
+                        {% endif %}
+                        {% if not loop.last %}
+                        <a href="/move_down_resource/<{{res.id}}>" role="button"
+                           class="btn btn-info btn-sm">Вниз</a>
+                        {% endif %}
                     </h4>
-                    {{res.content}}<br>Трудоемкость - {{ res.intensity }} {{ res.dim }}<br>
-                    Длительность - {{ res.duration }} нед.
-                    <br>
+                    {{res.content}}<br>
+                    Трудоемкость - {{ res.intensity }} {{ res.dim }}<br>
+                    Длительность - {{ res.duration }} нед.<br>
                 </div>
 
             </div>

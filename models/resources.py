@@ -19,10 +19,22 @@ class Resource(SqlAlchemyBase):
     duration = sqlalchemy.Column(sqlalchemy.Integer, default=4)
     completed = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     progress = sqlalchemy.Column(sqlalchemy.Integer, default=0)
+    row = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     activate_date = sqlalchemy.Column(sqlalchemy.DateTime)
 
     section = orm.relation('Section')
     checks = orm.relation("Check", back_populates='resource')
+
+    def on_delete(self, session, alldel=False):
+        for check in self.checks:
+            check.on_delete(session)
+            session.delete(check)
+        if alldel:
+            return
+        section = self.section
+        for item in section.resources:
+            if item.row > self.row:
+                item.row -= 1
 
 
 class Check(SqlAlchemyBase):
@@ -39,3 +51,5 @@ class Check(SqlAlchemyBase):
 
     resource = orm.relation('Resource')
 
+    def on_delete(self, session):
+        pass

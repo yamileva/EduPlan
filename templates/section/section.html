@@ -16,20 +16,19 @@
 
 
 <div class="container">
+    <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
+    <h3>Ресурсы</h3>
     <div class="row">
+        {% for res in resources %}
+            {% if res.progress == 100 %}
+                {% set style = 'alert-primary'%}
+            {% elif res.progress == 0 %}
+                {% set style = 'alert-light'%}
+            {% else %}
+                {% set style = 'alert-success'%}
+            {% endif %}
 
-        <div class="col">
-            <h5 class="alert-heading"> Длительность - {{section.duration}} нед.</h5>
-            {% if section.resources %}
-                <h3>Ресурсы</h3>
-                {% for res in section.resources %}
-                    {% if res.progress == 100 %}
-                        {% set style = 'alert-primary'%}
-                    {% elif res.progress == 0 %}
-                        {% set style = 'alert-light'%}
-                    {% else %}
-                        {% set style = 'alert-success'%}
-                    {% endif %}
+            <div class="col-lg-4 col-md-6">
                 <div class="alert {{style}}" role="alert">
                     <h5 class="alert-heading"><div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: {{res.progress}}%"
@@ -45,11 +44,14 @@
                         Отметить прогресс</a> <br>
                     {% endif %}
                 </div>
-                {% endfor %}
-            {% else %}
-                 <h3>Ресурсы отсутствуют</h3>
-            {% endif %}
-        </div>
+
+            </div>
+        {% endfor %}
     </div>
+
+    {% if not resources %}
+         <h3>Ресурсы отсутствуют</h3>
+    {% endif %}
+
 </div>
 {% endblock %}

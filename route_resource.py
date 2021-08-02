@@ -72,6 +72,7 @@ def create_resource(section_id):
         resource.duration = form.duration.data
         resource.completed = form.completed.data
         resource.progress = resource.completed * 100 // resource.intensity
+        resource.row = len(section.resources)
 
         section.resources.append(resource)
         session.merge(section)
@@ -141,6 +142,7 @@ def del_resource(resource_id):
     if resource is None or resource.section.track.user != current_user:
         abort(404)
     section = resource.section
+    resource.on_delete(session)
     session.delete(resource)
     session.commit()
     if section.resources:
@@ -155,3 +157,38 @@ def del_resource(resource_id):
     session.merge(track)
     session.commit()
     return redirect('/edit_section/<{}>'.format(section.id))
+
+
+@resrc.route('/move_up_resource/<resource_id>', methods=['GET'])
+@login_required
+def move_up_resource(resource_id):
+    resource_id = int(resource_id[1:-1])
+    session = db_session.create_session()
+    resource = session.query(Resource).filter(Resource.id == resource_id).first()
+    if resource is None or resource.section.track.user != current_user:
+        abort(404)
+    if resource.row > 0:
+        prev_resource = session.query(Resource).filter(Resource.row == resource.row - 1,
+                                                       Resource.section_id == resource.section_id).first()
+        prev_resource.row += 1
+        resource.row -= 1
+        session.commit()
+    return redirect('/edit_section/<{}>'.format(resource.section_id))
+
+
+@resrc.route('/move_down_resource/<resource_id>', methods=['GET'])
+@login_required
+def move_down_resource(resource_id):
+    resource_id = int(resource_id[1:-1])
+    session = db_session.create_session()
+    resource = session.query(Resource).filter(Resource.id == resource_id).first()
+    if resource is None or resource.section.track.user != current_user:
+        abort(404)
+    section = session.query(Section).filter(Section.id == resource.section_id).first()
+    if resource.row < len(section.resources) - 1:
+        next_resource = session.query(Resource).filter(Resource.row == resource.row + 1,
+                                                       Resource.section_id == resource.section_id).first()
+        next_resource.row -= 1
+        resource.row += 1
+        session.commit()
+    return redirect('/edit_section/<{}>'.format(resource.section_id))

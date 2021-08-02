@@ -27,17 +27,23 @@
 <div class="container">
     <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<-1>" role="button"
                                  class="btn btn-info">Добавить раздел</a></h4>
-    {% for item in track.sections%}
+    {% for item in sections%}
         <div class="row align-items-center">
             <div class="col">
                 <div class="alert alert-primary" role="alert">
                     <h4 class="alert-heading"><strong>{{item.title}}</strong>
                         <a href="/edit_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Редактировать</a>
+                           class="btn btn-info btn-sm">Редактировать</a>
                         <a href="/del_section/<{{item.id}}>" role="button"
-                           class="btn btn-info btn-sm">
-                            Удалить</a>
+                           class="btn btn-info btn-sm">Удалить</a>
+                        {% if not loop.first %}
+                            <a href="/move_up_section/<{{item.id}}>" role="button"
+                               class="btn btn-info btn-sm">Вверх</a>
+                        {% endif %}
+                        {% if not loop.last %}
+                            <a href="/move_down_section/<{{item.id}}>" role="button"
+                               class="btn btn-info btn-sm">Вниз</a>
+                        {% endif %}
                     </h4>
                 </div>
                 <h4 class="alert-heading"><a href="/create_section/<{{track.id}}>/<{{item.id}}>" role="button"

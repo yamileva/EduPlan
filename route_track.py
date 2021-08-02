@@ -17,7 +17,7 @@ def show_user_tracks():
 
     tracks = session.query(Track).filter(
         (Track.user == current_user))
-    return render_template("user_tracks.html", tlist=tracks)
+    return render_template("user_tracks.html", title="Список траекторий", tlist=tracks)
 
 
 @trc.route("/track/<track_id>")
@@ -28,7 +28,8 @@ def show_track(track_id):
     track = session.query(Track).filter(Track.id == track_id,
                                         Track.user == current_user).first()
     if track:
-        return render_template("track.html", track=track)
+        return render_template("track.html", title="Траектория", track=track,
+                               sections=sorted(track.sections, key=lambda x: x.row))
     else:
         abort(404)
 
@@ -52,7 +53,8 @@ def edit_track(track_id):
             return redirect('/edit_track/<{}>'.format(track.id))
         else:
             abort(404)
-    return render_template("track_edit.html", track=track, form=form)
+    return render_template("track_edit.html", title="Редактирование траектории", track=track,
+                           sections=sorted(track.sections, key=lambda x: x.row), form=form)
 
 
 @trc.route('/create_track', methods=['GET', 'POST'])
@@ -78,6 +80,7 @@ def del_track(track_id):
     track = session.query(Track).filter(Track.id == track_id, Track.user == current_user).first()
     if track is None:
         abort(404)
+    track.on_delete(session)
     session.delete(track)
     session.commit()
     return redirect('/tracks')

@@ -17,7 +17,8 @@ def show_section(section_id):
     section = session.query(Section).filter(Section.id == section_id).first()
     if section is None or section.track.user != current_user:
         abort(404)
-    return render_template("section.html", section=section)
+    return render_template("section.html", title="Раздел", section=section,
+                           resources=sorted(section.resources, key=lambda x: x.row))
 
 
 @sect.route('/create_section/<track_id>/<section_id>', methods=['GET', 'POST'])
@@ -46,6 +47,7 @@ def create_section(track_id, section_id):
                     item.row += 1
             section.duration = form.duration.data
             track.sections.append(section)
+            track.sections.sort(key=lambda x: x.row)
             session.merge(track)
             session.commit()
             return redirect('/edit_section/<{}>'.format(section.id))
@@ -74,10 +76,11 @@ def edit_section(section_id):
         section.duration = form.duration.data
         session.commit()
         return redirect('/edit_section/<{}>'.format(section_id))
-    return render_template('section_edit.html', section=section, form=form)
+    return render_template('section_edit.html', title="Редактирование раздела", section=section,
+                           resources=sorted(section.resources, key=lambda x: x.row), form=form)
 
 
-@sect.route('/del_section/<section_id>', methods=['GET', 'POST'])
+@sect.route('/del_section/<section_id>', methods=['GET'])
 @login_required
 def del_section(section_id):
     section_id = int(section_id[1:-1])
@@ -86,6 +89,7 @@ def del_section(section_id):
     if section is None or section.track.user != current_user:
         abort(404)
     track = section.track
+    section.on_delete(session)
     session.delete(section)
     session.commit()
     if track.sections:
@@ -97,4 +101,40 @@ def del_section(section_id):
     return redirect('/edit_track/<{}>'.format(track.id))
 
 
+@sect.route('/move_up_section/<section_id>', methods=['GET'])
+@login_required
+def move_up_section(section_id):
+    section_id = int(section_id[1:-1])
+    session = db_session.create_session()
+    section = session.query(Section).filter(Section.id == section_id).first()
+    if section is None or section.track.user != current_user:
+        abort(404)
+    if section.row > 0:
+        prev_section = session.query(Section).filter(Section.row == section.row - 1,
+                                                     Section.track_id == section.track_id).first()
+        prev_section.row += 1
+        section.row -= 1
+        track = session.query(Track).filter(Track.id == section.track_id).first()
+        track.sections.sort(key=lambda x: x.row)
+        session.commit()
+    return redirect('/edit_track/<{}>'.format(section.track_id))
 
+
+@sect.route('/move_down_section/<section_id>', methods=['GET'])
+@login_required
+def move_down_section(section_id):
+    section_id = int(section_id[1:-1])
+    session = db_session.create_session()
+    section = session.query(Section).filter(Section.id == section_id).first()
+    if section is None or section.track.user != current_user:
+        abort(404)
+    track = session.query(Track).filter(Track.id == section.track_id,
+                                        Track.user == current_user).first()
+    if section.row < len(track.sections) - 1:
+        next_section = session.query(Section).filter(Section.row == section.row + 1,
+                                                     Section.track_id == section.track_id).first()
+        next_section.row -= 1
+        section.row += 1
+        track.sections.sort(key=lambda x: x.row)
+        session.commit()
+    return redirect('/edit_track/<{}>'.format(section.track_id))
